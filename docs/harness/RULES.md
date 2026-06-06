@@ -5,6 +5,81 @@
 
 ---
 
+## 0. 작업 전 계획 강제 규칙 (HIGHEST PRIORITY — MANDATORY)
+
+> **모든 실질적 작업은 Plan 모드 여부와 관계없이, 시작 전 반드시 계획을 수립하고 `docs/plans/`에 기록한 후 실행한다.**
+> 이 규칙은 Plan 모드 규칙(Section 1)보다 상위이며, 어떤 상황에서도 생략할 수 없다.
+
+### 적용 범위
+
+다음에 해당하는 모든 작업에 적용한다:
+
+| 작업 유형 | 예시 |
+|:---|:---|
+| ai-dlc 스킬 실행 | `/ai-dlc-system-overview`, `/ai-dlc-api-design` 등 |
+| 파일 2개 이상 생성/수정 | 산출물 작성, 코드 구현, 설정 변경 |
+| 새 기능·컴포넌트 구현 | Route Handler, Page, Component 추가 |
+| 설계 결정 사항 | 아키텍처 변경, 데이터 스키마 변경 |
+| 하네스 규칙 변경 | RULES.md, CLAUDE.md 개정 |
+
+> **제외**: 단순 오타 수정, 단일 파일 1줄 이하 변경, 조회·읽기 전용 작업
+
+### 필수 실행 절차 (Plan → Record → Execute → Commit)
+
+```
+Step 1: EXPLORE (Agent 병렬 실행)
+  ├─ Explore 에이전트 1: 요구사항·기존 산출물 탐색
+  ├─ Explore 에이전트 2: 관련 스킬 템플릿·output-policy 확인
+  └─ Explore 에이전트 3: 연관 파일·코드 현황 파악
+
+Step 2: PLAN (Agent 실행)
+  └─ Plan 에이전트: 구현 전략 설계 (접근법·단계·검증 방법)
+
+Step 3: RECORD (파일 작성 — MANDATORY)
+  └─ docs/plans/YYYY-MM-DD_<kebab-topic>.md 생성
+
+Step 4: EXECUTE (작업 실행)
+  └─ Plan 내용에 따라 파일 생성·코드 작성
+
+Step 5: COMMIT (MANDATORY)
+  └─ git add → git commit (작업 완료의 마지막 단계)
+```
+
+### 계획 파일 최소 구조
+
+```markdown
+# Plan: <제목>
+
+| 항목 | 내용 |
+|:---|:---|
+| 날짜 | YYYY-MM-DD |
+| 대상 | 작업 대상 파일/기능 |
+| 목표 | 이 계획으로 달성하려는 것 |
+
+## 계획 내용
+(단계별 접근 방법)
+
+## 실행 결과
+(실행 후 작성)
+
+## Lessons Learned
+(실행 후 작성)
+```
+
+### ai-dlc 스킬 전용 실행 절차
+
+각 ai-dlc 스킬 실행 전 아래를 수행한다:
+
+1. `docs/ai-dlc/README.md` 읽어 해당 스킬의 산출물 경로·입력 문서 확인
+2. Explore 에이전트로 입력 문서(요구사항정의서, 이전 Phase 산출물) 탐색
+3. Plan 에이전트로 산출물 내용 설계
+4. `docs/plans/YYYY-MM-DD_<skill-name>.md` 기록
+5. 산출물 파일 생성 (`docs/ai-dlc/<phase>/`)
+6. `docs/ai-dlc/README.md` 진행 상태 업데이트 (✅)
+7. git commit
+
+---
+
 ## 1. Plan 모드 규칙 (MANDATORY)
 
 Plan 모드(`/plan`) 사용 시 **계획 파일을 반드시 `docs/plans/`에 저장**한다.

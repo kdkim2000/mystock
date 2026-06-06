@@ -138,6 +138,46 @@ OPENAI_API_KEY
 
 ---
 
+## 작업 전 계획 강제 규칙 (HIGHEST PRIORITY — MANDATORY)
+
+> **모든 실질적 작업은 Plan 모드 여부와 관계없이, 시작 전 반드시 계획을 수립하고 `docs/plans/`에 기록한 후 실행한다.**
+> 계획 없이 실행하는 것은 허용되지 않는다. 이 규칙은 아래 "Plan 모드 기록 규칙"보다 상위다.
+
+### 적용 범위
+
+- ai-dlc 스킬 실행 (`/ai-dlc-*`)
+- 파일 2개 이상 생성·수정
+- 새 기능·컴포넌트 구현
+- 설계 결정·아키텍처 변경
+- 하네스 규칙 변경
+
+> 제외: 단순 오타 수정, 단일 파일 1줄 이하 변경, 조회·읽기 전용 작업
+
+### 필수 실행 절차
+
+```
+Step 1: EXPLORE  — Explore 에이전트 병렬 실행 (최대 3개)
+                   요구사항·기존 산출물·스킬 템플릿·연관 코드 탐색
+Step 2: PLAN     — Plan 에이전트로 구현 전략 설계
+Step 3: RECORD   — docs/plans/YYYY-MM-DD_<topic>.md 기록 (MANDATORY)
+Step 4: EXECUTE  — 계획에 따라 파일 생성·코드 작성
+Step 5: COMMIT   — git commit으로 작업 완료 (MANDATORY)
+```
+
+### ai-dlc 스킬 전용 절차
+
+1. `docs/ai-dlc/README.md` → 산출물 경로·입력 문서 확인
+2. Explore 에이전트로 입력 문서 탐색
+3. Plan 에이전트로 산출물 내용 설계
+4. `docs/plans/YYYY-MM-DD_<skill-name>.md` 기록
+5. `docs/ai-dlc/<phase>/` 에 산출물 파일 생성
+6. `docs/ai-dlc/README.md` 진행 상태 ✅ 업데이트
+7. git commit
+
+> 상세 절차: `docs/harness/RULES.md` Section 0
+
+---
+
 ## Plan 모드 기록 규칙 (MANDATORY)
 
 > **Plan 모드(`/plan`)를 사용할 때마다 계획 내용을 반드시 `docs/plans/`에 파일로 저장한다.**

@@ -197,35 +197,69 @@ metadata:
 
 ---
 
-## 7. Plan 모드 흐름
+## 7. 작업 실행 흐름 (Plan 모드 여부 무관)
+
+> RULES.md Section 0: 모든 실질적 작업은 반드시 Plan → Record → Execute → Commit 순서로 진행.
+
+### 표준 흐름 (Plan 모드 없이 직접 실행 시)
 
 ```
-사용자: /plan 또는 자동 진입
+사용자 요청
+    ↓
+Step 1: EXPLORE — Explore 에이전트 병렬 (최대 3개)
+  ├─ 에이전트 1: 요구사항·기존 산출물 탐색
+  ├─ 에이전트 2: 스킬 템플릿·output-policy 확인
+  └─ 에이전트 3: 연관 파일·코드 현황 파악
+    ↓
+Step 2: PLAN — Plan 에이전트 실행
+  - 구현 전략 설계, 단계별 접근법, 검증 방법
+    ↓
+Step 3: RECORD — 계획 파일 저장 (MANDATORY)
+  docs/plans/YYYY-MM-DD_<topic>.md
+    ↓
+Step 4: EXECUTE — 작업 실행
+  - 파일 생성·코드 작성·산출물 생성
+    ↓
+Step 5: COMMIT — git commit (MANDATORY)
+  - 작업 완료의 마지막 단계
+  - 계획 파일에 실행 결과·Lessons Learned 추가 후 커밋
+```
+
+### Plan 모드 (`/plan`) 진입 시 흐름
+
+```
+사용자: /plan
     ↓
 Plan 모드 활성화 (read-only 강제)
     ↓
-Phase 1: Explore 에이전트 병렬 탐색 (최대 3개)
-  - 요구사항 문서 분석
-  - 스킬 템플릿/output-policy 확인
-  - 기존 산출물 확인
+Step 1~2: Explore + Plan 에이전트 (read-only)
     ↓
-Phase 2: Plan 에이전트 설계
-  - 구현 접근법 설계
-  - 대안 고려
-    ↓
-Phase 3: 검토
-  - 필요 시 AskUserQuestion으로 명확화
-    ↓
-Phase 4: 계획 파일 작성
+Step 3: 계획 파일 작성
   C:\Users\kdkim2000\.claude\plans\swift-bubbling-taco.md
     ↓
-Phase 5: ExitPlanMode → 사용자 승인 요청
+ExitPlanMode → 사용자 승인 요청
     ↓
-[승인 시]
+[승인 시] Step 4~5: Execute + Commit
+```
+
+### ai-dlc 스킬 전용 흐름
+
+```
+/ai-dlc-<skill-name> 호출
     ↓
-실행 (파일 작성, 코드 생성 등)
+docs/ai-dlc/README.md → 산출물 경로·입력 문서 확인
     ↓
-docs/plans/YYYY-MM-DD_<topic>.md 에 결과 기록
+Explore 에이전트: 입력 문서 탐색 (요구사항정의서 + 이전 Phase 산출물)
+    ↓
+Plan 에이전트: 산출물 내용 설계
+    ↓
+docs/plans/YYYY-MM-DD_<skill-name>.md 기록
+    ↓
+docs/ai-dlc/<phase>/ 산출물 파일 생성
+    ↓
+docs/ai-dlc/README.md 진행 상태 ✅ 업데이트
+    ↓
+git commit
 ```
 
 ---
