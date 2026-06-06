@@ -293,7 +293,7 @@ Phase 11 (납품)
 | Phase 0 — 요구사항정의 | ✅ 완료 | 요구사항정의서_my-stock_20260606.md |
 | Phase 1 — 기획 | ✅ 완료 | 1-1 용어사전 ✅ · 1-2 페르소나 ✅ · 1-3 MVP범위 ✅ · 1-4 사용자스토리맵 ✅ (`01-planning/`) |
 | Phase 2 — 분석 | ✅ 완료 | 2-1 시스템개요서 ✅ · 2-2 서비스카탈로그 ✅ · 2-3 유즈케이스 ✅ · 2-4 비즈니스규칙 ✅ · 2-5 화면목록 ✅ (`02-analysis/`) |
-| Phase 3 — 설계 | 🔄 진행중 | 3-1 화면정의서 ✅ · 3-2 데이터설계서 ✅ (`03-design/screen-spec.md`, `03-design/data-design.md`) |
+| Phase 3 — 설계 | 🔄 진행중 | 3-1 화면정의서 ✅ · 3-2 데이터설계서 ✅ · 3-3 API설계서 ✅ (`03-design/screen-spec.md`, `03-design/data-design.md`, `03-design/api-design.md`) |
 | Phase 4 — 환경 설정 | ⬜ 대기 | |
 | Phase 5 — 구현 계획 | ⬜ 대기 | |
 | Phase 6 — 구현 | ⬜ 대기 | |
