@@ -295,7 +295,7 @@ Phase 11 (납품)
 | Phase 2 — 분석 | ✅ 완료 | 2-1 시스템개요서 ✅ · 2-2 서비스카탈로그 ✅ · 2-3 유즈케이스 ✅ · 2-4 비즈니스규칙 ✅ · 2-5 화면목록 ✅ (`02-analysis/`) |
 | Phase 3 — 설계 | ✅ 완료 | 3-1 화면정의서 ✅ · 3-2 데이터설계서 ✅ · 3-3 API설계서 ✅ · 3-4 클래스설계서 ✅ · 3-5 시퀀스다이어그램 ✅ (`03-design/screen-spec.md`, `03-design/data-design.md`, `03-design/api-design.md`, `03-design/class-design.md`, `03-design/sequence-design.md`) |
 | Phase 4 — 환경 설정 | ✅ 완료 | 4-1 Next.js프로젝트초기화 ✅ · 4-2 Node의존성정의 ✅ · 4-3 NextAuth가이드 ✅ · 4-4 middleware인증가이드 ✅ · 4-5 shadcn/ui테마가이드 ✅ · 4-6 Tailwind반응형가이드 ✅ · 4-7 API호출패턴가이드 ✅ · 4-8 ReactQuery패칭가이드 ✅ · 4-9 전역상태관리가이드 ✅ · 4-10 Zod유효성검사가이드 ✅ · 4-11 ServerComponent분리가이드 ✅ (`04-setup/nxt-project-setup.md`, `04-setup/fe-node-setup.md`, `04-setup/nxt-auth-guide.md`, `04-setup/nxt-middleware-guide.md`, `04-setup/fe-shadcn-guide.md`, `04-setup/fe-tailwind-guide.md`, `04-setup/fe-axios-guide.md`, `04-setup/fe-react-query-guide.md`, `04-setup/fe-state-guide.md`, `04-setup/fe-zod-guide.md`, `04-setup/nxt-sc-guide.md`) |
-| Phase 5 — 구현 계획 | ⬜ 대기 | |
+| Phase 5 — 구현 계획 | 🔄 진행 중 | 5-1 의존성분석서 ✅ (`05-impl-plan/dependency-analysis.md`) |
 | Phase 6 — 구현 | ⬜ 대기 | |
 | Phase 7 — 검증 | ⬜ 대기 | |
 | Phase 8 — 테스트 | ⬜ 대기 | |
