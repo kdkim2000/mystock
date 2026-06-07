@@ -54,7 +54,7 @@ export function RsiMacdCard({ code }: Props) {
             <ComposedChart data={rsiValues}>
               <XAxis dataKey="date" hide />
               <YAxis domain={[0, 100]} width={30} tick={{ fontSize: 10 }} />
-              <Tooltip formatter={(v: number) => v?.toFixed(1)} />
+              <Tooltip formatter={(v) => v != null ? Number(v).toFixed(1) : ''} />
               <Line type="monotone" dataKey="rsi" stroke={rsiColor} dot={false} strokeWidth={1.5} />
             </ComposedChart>
           </ResponsiveContainer>
@@ -65,7 +65,7 @@ export function RsiMacdCard({ code }: Props) {
             <ComposedChart data={macdData}>
               <XAxis dataKey="date" hide />
               <YAxis width={30} tick={{ fontSize: 10 }} />
-              <Tooltip formatter={(v: number) => v?.toFixed(2)} />
+              <Tooltip formatter={(v) => v != null ? Number(v).toFixed(2) : ''} />
               <Bar dataKey="histogram" fill="hsl(240, 5%, 65%)" opacity={0.5} />
               <Line type="monotone" dataKey="macd" stroke="hsl(0, 72%, 51%)" dot={false} strokeWidth={1.5} />
               <Line type="monotone" dataKey="signal" stroke="hsl(220, 90%, 45%)" dot={false} strokeWidth={1.5} />

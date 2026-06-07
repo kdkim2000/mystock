@@ -64,7 +64,7 @@ export function CumulativeProfitChart() {
           <AreaChart data={chartData}>
             <XAxis dataKey="date" tick={{ fontSize: 10 }} />
             <YAxis tickFormatter={v => `${(v / 1e4).toFixed(0)}만`} width={50} />
-            <Tooltip formatter={(v: number) => `${(v / 1e4).toFixed(1)}만원`} />
+            <Tooltip formatter={(v) => v != null ? `${(Number(v) / 1e4).toFixed(1)}만원` : ''} />
             <Area
               type="monotone"
               dataKey="value"

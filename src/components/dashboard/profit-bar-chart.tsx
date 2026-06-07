@@ -31,7 +31,7 @@ export function ProfitBarChart() {
           <BarChart data={chartData}>
             <XAxis dataKey="name" tick={{ fontSize: 11 }} />
             <YAxis tickFormatter={v => `${(v / 1e4).toFixed(0)}만`} width={50} />
-            <Tooltip formatter={(v: number) => `${(v / 1e4).toFixed(1)}만원`} />
+            <Tooltip formatter={(v) => v != null ? `${(Number(v) / 1e4).toFixed(1)}만원` : ''} />
             <Bar dataKey="value" radius={[4, 4, 0, 0]}>
               {chartData.map((entry, i) => (
                 <Cell

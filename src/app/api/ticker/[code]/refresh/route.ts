@@ -79,12 +79,12 @@ function buildDartFinancial(list: DartAccountItem[], code: string): DartFinancia
 
 export async function POST(
   request: Request,
-  { params }: { params: { code: string } },
+  { params }: { params: Promise<{ code: string }> },
 ) {
   const session = await getServerSession(authOptions)
   if (!session) return err('Unauthorized', 'AUTH_ERROR', 401)
 
-  const code = params.code
+  const { code } = await params
   if (!/^\d{6}$/.test(code)) return err('종목코드는 6자리 숫자여야 합니다', 'VALIDATION_ERROR', 400)
 
   try {

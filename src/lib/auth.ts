@@ -25,7 +25,9 @@ export const authOptions: AuthOptions = {
       return token
     },
     session({ session, token }) {
-      session.user.email = token.email as string
+      if (session.user) {
+        session.user.email = token.email as string
+      }
       return session
     },
   },

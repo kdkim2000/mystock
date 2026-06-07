@@ -31,7 +31,7 @@ export function PositionBarChart() {
           <BarChart data={chartData} layout="vertical">
             <XAxis type="number" hide />
             <YAxis type="category" dataKey="name" width={80} tick={{ fontSize: 12 }} />
-            <Tooltip formatter={(v: number) => `${(v / 1e4).toFixed(0)}만원`} />
+            <Tooltip formatter={(v) => v != null ? `${(Number(v) / 1e4).toFixed(0)}만원` : ''} />
             <Bar dataKey="value" radius={[0, 4, 4, 0]}>
               {chartData.map((_, i) => (
                 <Cell key={i} fill="hsl(220, 70%, 50%)" />
