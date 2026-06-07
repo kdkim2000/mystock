@@ -299,6 +299,6 @@ Phase 11 (납품)
 | Phase 6 — 구현 | ✅ 완료 | 6-1 Route Handlers ✅ · 6-2 Server Actions ✅ · 6-3 Pages ✅ · 6-4 Components ✅ (`06-implementation/routes/`, `06-implementation/actions/`, `06-implementation/pages/`, `06-implementation/components/`) |
 | Phase 7 — 검증 | ✅ 완료 | 7-1 TypeScript검사 ✅ (`07-validation/ts-check.md`) · 7-2 ESLint검사 ✅ (`07-validation/lint-check.md`) · 7-3 Next.js코드리뷰 ✅ (`07-validation/nxt-code-review.md`) · 7-4 FE코드리뷰 ✅ (`07-validation/fe-code-review.md`) · 7-5 설계-코드일관성검증 ✅ (`07-validation/consistency-check.md`) · 7-6 코드추적성매트릭스 ✅ (`07-validation/traceability.md`) · 7-7 코드복잡도분석 ✅ (`07-validation/code-complexity.md`) · P1/P2 결함 7건 전체 수정 완료 |
 | Phase 8 — 테스트 | ✅ 완료 | 8-1 Next.js E2E테스트 ✅ (`08-testing/e2e-tests.md`, `tests/e2e/auth.spec.ts`, `tests/e2e/stock-detail.spec.ts`) · 8-2 FE E2E테스트 ✅ (`08-testing/fe-e2e-tests.md`, `tests/e2e/dashboard.spec.ts`, `tests/e2e/error-states.spec.ts`) · 8-3 커버리지검증 ✅ (`08-testing/e2e-validate.md`) · Must UC 100% · Playwright 1.60.0 |
-| Phase 9 — 성능 최적화 | ⬜ 대기 | |
+| Phase 9 — 성능 최적화 | ✅ 완료 | 9-1 Next.js성능최적화 ✅ (`09-performance/nxt-perf-guide.md`) · 9-2 FE성능최적화 ✅ (`09-performance/fe-perf-guide.md`) · serverExternalPackages · Recharts dynamic import · useMemo 최적화 · gcTime=10분 |
 | Phase 10 — 배포 | ⬜ 대기 | |
 | Phase 11 — 납품 | ⬜ 대기 | |
