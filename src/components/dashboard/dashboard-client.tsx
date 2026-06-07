@@ -1,12 +1,24 @@
 'use client'
+import dynamic from 'next/dynamic'
 import { KpiCards } from './kpi-card'
-import { PositionBarChart } from './position-bar-chart'
-import { ProfitBarChart } from './profit-bar-chart'
-import { CumulativeProfitChart } from './cumulative-profit-chart'
 import { StockAnalysisTable } from './stock-analysis-table'
 import { TradeHistoryTable } from './trade-history-table'
 import { StrategyTable } from './strategy-table'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
+import { Skeleton } from '@/components/ui/skeleton'
+
+const PositionBarChart = dynamic(
+  () => import('./position-bar-chart').then(m => ({ default: m.PositionBarChart })),
+  { loading: () => <Skeleton className="h-64 w-full rounded-xl" />, ssr: false },
+)
+const ProfitBarChart = dynamic(
+  () => import('./profit-bar-chart').then(m => ({ default: m.ProfitBarChart })),
+  { loading: () => <Skeleton className="h-64 w-full rounded-xl" />, ssr: false },
+)
+const CumulativeProfitChart = dynamic(
+  () => import('./cumulative-profit-chart').then(m => ({ default: m.CumulativeProfitChart })),
+  { loading: () => <Skeleton className="h-64 w-full rounded-xl" />, ssr: false },
+)
 
 export function DashboardClient() {
   return (

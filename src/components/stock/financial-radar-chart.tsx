@@ -1,4 +1,5 @@
 'use client'
+import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTheme } from 'next-themes'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -8,6 +9,10 @@ import type { Valuation, FinancialSummary } from '@/types/kis'
 
 interface FundamentalData { valuation: Valuation; financial: FinancialSummary }
 interface Props { code: string }
+
+function normalize(val: number, min: number, max: number) {
+  return Math.max(0, Math.min(100, ((val - min) / (max - min)) * 100))
+}
 
 export function FinancialRadarChart({ code }: Props) {
   const { resolvedTheme } = useTheme()
@@ -19,18 +24,21 @@ export function FinancialRadarChart({ code }: Props) {
 
   if (isLoading) return <Card id="sec-radar"><CardContent className="h-64 pt-6"><Skeleton className="h-full" /></CardContent></Card>
 
-  const v = data?.valuation; const f = data?.financial
-  const normalize = (val: number, min: number, max: number) => Math.max(0, Math.min(100, ((val - min) / (max - min)) * 100))
+  const v = data?.valuation
+  const f = data?.financial
 
-  const radarData = [
+  const gridColor = useMemo(
+    () => resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+    [resolvedTheme],
+  )
+
+  const radarData = useMemo(() => [
     { subject: '수익성', value: v ? normalize(v.roe, 0, 30) : 0 },
     { subject: '안정성', value: v ? normalize(100 - Math.min(v.debtRatio, 200), 0, 100) : 0 },
     { subject: '밸류', value: v ? normalize(1 / Math.max(v.pbr, 0.1), 0, 5) * 20 : 0 },
     { subject: '수익률', value: v ? normalize(v.roe, 0, 30) : 0 },
     { subject: '성장성', value: f && f.revenue > 0 ? normalize((f.operatingProfit / f.revenue) * 100, 0, 30) : 0 },
-  ]
-
-  const gridColor = resolvedTheme === 'dark' ? '#334155' : '#e2e8f0'
+  ], [v, f])
 
   return (
     <Card id="sec-radar">

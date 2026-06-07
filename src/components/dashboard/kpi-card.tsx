@@ -1,4 +1,5 @@
 'use client'
+import { useMemo } from 'react'
 import { useAggregation } from '@/hooks/use-aggregation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -7,12 +8,17 @@ import { ChangeBadge } from '@/components/ui/change-badge'
 export function KpiCards() {
   const { data, isLoading } = useAggregation()
 
-  const totals = data ? {
-    totalMarketValue: data.reduce((sum, r) => sum + r.Holdings * r.AvgPrice, 0),
-    realizedPnL: data.reduce((sum, r) => sum + r.RealizedPnL, 0),
-    tradeCount: data.reduce((sum, r) => sum + r.TradeCount, 0),
-    winRate: data.reduce((s, r) => s + r.WinCount, 0) / Math.max(data.reduce((s, r) => s + r.TradeCount, 0), 1) * 100,
-  } : null
+  const totals = useMemo(() => {
+    if (!data) return null
+    const tradeCount = data.reduce((sum, r) => sum + r.TradeCount, 0)
+    const winCount = data.reduce((s, r) => s + r.WinCount, 0)
+    return {
+      totalMarketValue: data.reduce((sum, r) => sum + r.Holdings * r.AvgPrice, 0),
+      realizedPnL: data.reduce((sum, r) => sum + r.RealizedPnL, 0),
+      tradeCount,
+      winRate: winCount / Math.max(tradeCount, 1) * 100,
+    }
+  }, [data])
 
   if (isLoading) return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
