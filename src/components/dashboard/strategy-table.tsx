@@ -14,8 +14,6 @@ import {
 export function StrategyTable() {
   const { data, isLoading } = useTransactions()
 
-  if (isLoading) return <Skeleton className="h-32" />
-
   const strategyStats = useMemo(() => {
     if (!data) return []
     const map = new Map<string, { count: number }>()
@@ -33,6 +31,8 @@ export function StrategyTable() {
       .map(([tag, s]) => ({ tag, ...s }))
       .sort((a, b) => b.count - a.count)
   }, [data])
+
+  if (isLoading) return <Skeleton className="h-32" />
 
   return (
     <div className="rounded-md border">
