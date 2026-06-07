@@ -294,7 +294,7 @@ Phase 11 (납품)
 | Phase 1 — 기획 | ✅ 완료 | 1-1 용어사전 ✅ · 1-2 페르소나 ✅ · 1-3 MVP범위 ✅ · 1-4 사용자스토리맵 ✅ (`01-planning/`) |
 | Phase 2 — 분석 | ✅ 완료 | 2-1 시스템개요서 ✅ · 2-2 서비스카탈로그 ✅ · 2-3 유즈케이스 ✅ · 2-4 비즈니스규칙 ✅ · 2-5 화면목록 ✅ (`02-analysis/`) |
 | Phase 3 — 설계 | ✅ 완료 | 3-1 화면정의서 ✅ · 3-2 데이터설계서 ✅ · 3-3 API설계서 ✅ · 3-4 클래스설계서 ✅ · 3-5 시퀀스다이어그램 ✅ (`03-design/screen-spec.md`, `03-design/data-design.md`, `03-design/api-design.md`, `03-design/class-design.md`, `03-design/sequence-design.md`) |
-| Phase 4 — 환경 설정 | 🔄 진행 중 | 4-1 Next.js프로젝트초기화 ✅ · 4-2 Node의존성정의 ✅ · 4-3 NextAuth가이드 ✅ · 4-4 middleware인증가이드 ✅ · 4-5 shadcn/ui테마가이드 ✅ · 4-6 Tailwind반응형가이드 ✅ · 4-7 API호출패턴가이드 ✅ (`04-setup/nxt-project-setup.md`, `04-setup/fe-node-setup.md`, `04-setup/nxt-auth-guide.md`, `04-setup/nxt-middleware-guide.md`, `04-setup/fe-shadcn-guide.md`, `04-setup/fe-tailwind-guide.md`, `04-setup/fe-axios-guide.md`) |
+| Phase 4 — 환경 설정 | 🔄 진행 중 | 4-1 Next.js프로젝트초기화 ✅ · 4-2 Node의존성정의 ✅ · 4-3 NextAuth가이드 ✅ · 4-4 middleware인증가이드 ✅ · 4-5 shadcn/ui테마가이드 ✅ · 4-6 Tailwind반응형가이드 ✅ · 4-7 API호출패턴가이드 ✅ · 4-8 ReactQuery패칭가이드 ✅ (`04-setup/nxt-project-setup.md`, `04-setup/fe-node-setup.md`, `04-setup/nxt-auth-guide.md`, `04-setup/nxt-middleware-guide.md`, `04-setup/fe-shadcn-guide.md`, `04-setup/fe-tailwind-guide.md`, `04-setup/fe-axios-guide.md`, `04-setup/fe-react-query-guide.md`) |
 | Phase 5 — 구현 계획 | ⬜ 대기 | |
 | Phase 6 — 구현 | ⬜ 대기 | |
 | Phase 7 — 검증 | ⬜ 대기 | |
