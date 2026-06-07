@@ -10,7 +10,7 @@ import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 export function DashboardClient() {
   return (
-    <div className="container mx-auto py-6 space-y-6">
+    <div className="container mx-auto py-6 space-y-6" data-testid="dashboard-container">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">포트폴리오 대시보드</h1>
         <ThemeToggle />

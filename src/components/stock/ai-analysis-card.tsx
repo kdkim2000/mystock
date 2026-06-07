@@ -25,14 +25,14 @@ export function AiAnalysisCard({ code }: Props) {
     <Card id="sec-ai">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-sm flex items-center gap-2"><Bot className="h-4 w-4" />AI 분석</CardTitle>
-        <Button variant="ghost" size="sm" onClick={handleRefresh} disabled={isPending}>
+        <Button variant="ghost" size="sm" onClick={handleRefresh} disabled={isPending} data-testid="ai-analysis-refresh-button">
           <RefreshCw className={`h-4 w-4 mr-1 ${isPending ? 'animate-spin' : ''}`} />
           {data ? '갱신' : '생성'}
         </Button>
       </CardHeader>
       <CardContent>
         {isLoading || isPending ? <Skeleton className="h-48" /> : data ? (
-          <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap text-sm leading-relaxed">{data.content}</div>
+          <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap text-sm leading-relaxed" data-testid="ai-analysis-content">{data.content}</div>
         ) : (
           <div className="text-center py-8 text-muted-foreground">
             <Bot className="h-8 w-8 mx-auto mb-2 opacity-50" />

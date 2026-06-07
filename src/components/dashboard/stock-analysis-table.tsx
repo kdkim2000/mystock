@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link'
 import { useAggregation } from '@/hooks/use-aggregation'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ChangeBadge } from '@/components/ui/change-badge'
@@ -17,7 +18,7 @@ export function StockAnalysisTable() {
   if (isLoading) return <Skeleton className="h-48" />
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border" data-testid="stock-analysis-table">
       <Table>
         <TableHeader>
           <TableRow>
@@ -31,8 +32,12 @@ export function StockAnalysisTable() {
         </TableHeader>
         <TableBody>
           {(agg ?? []).map(row => (
-            <TableRow key={row.Ticker}>
-              <TableCell className="font-medium">{row.Ticker}</TableCell>
+            <TableRow key={row.Ticker} data-testid={`stock-row-${row.Ticker}`}>
+              <TableCell className="font-medium">
+                {row.Code
+                  ? <Link href={`/stock/${row.Code}`} className="hover:underline">{row.Ticker}</Link>
+                  : row.Ticker}
+              </TableCell>
               <TableCell className="text-right">{row.Holdings.toLocaleString('ko-KR')}</TableCell>
               <TableCell className="text-right">{row.AvgPrice.toLocaleString('ko-KR')}원</TableCell>
               <TableCell className="text-right">

@@ -25,7 +25,7 @@ export function RefreshSection({ code }: Props) {
     <Card id="sec-refresh">
       <CardHeader><CardTitle className="text-sm">데이터 갱신</CardTitle></CardHeader>
       <CardContent className="flex items-center gap-4">
-        <Button onClick={handleRefresh} disabled={isPending}>
+        <Button onClick={handleRefresh} disabled={isPending} data-testid="refresh-button">
           <RefreshCw className={`h-4 w-4 mr-2 ${isPending ? 'animate-spin' : ''}`} />
           {isPending ? '갱신 중...' : '전체 데이터 갱신'}
         </Button>

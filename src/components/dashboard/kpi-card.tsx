@@ -25,7 +25,7 @@ export function KpiCards() {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <Card>
+      <Card data-testid="kpi-card-investment">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">총 투자금액</CardTitle>
         </CardHeader>
@@ -36,7 +36,7 @@ export function KpiCards() {
           </div>
         </CardContent>
       </Card>
-      <Card>
+      <Card data-testid="kpi-card-pnl">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">실현손익</CardTitle>
         </CardHeader>
@@ -46,7 +46,7 @@ export function KpiCards() {
           </div>
         </CardContent>
       </Card>
-      <Card>
+      <Card data-testid="kpi-card-trades">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">거래횟수</CardTitle>
         </CardHeader>
@@ -57,7 +57,7 @@ export function KpiCards() {
           </div>
         </CardContent>
       </Card>
-      <Card>
+      <Card data-testid="kpi-card-winrate">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">승률</CardTitle>
         </CardHeader>

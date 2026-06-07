@@ -14,6 +14,7 @@ export function LoginCard() {
         <Button
           className="w-full"
           variant="outline"
+          data-testid="google-signin-button"
           onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
         >
           <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">

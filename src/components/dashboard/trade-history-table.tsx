@@ -26,7 +26,7 @@ export function TradeHistoryTable() {
 
   return (
     <div className="space-y-3">
-      <div className="rounded-md border">
+      <div className="rounded-md border" data-testid="trade-history-table">
         <Table>
           <TableHeader>
             <TableRow>
@@ -63,6 +63,7 @@ export function TradeHistoryTable() {
           <button
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1}
+            data-testid="pagination-prev"
             className="px-3 py-1 text-sm border rounded disabled:opacity-50"
           >
             이전
@@ -71,6 +72,7 @@ export function TradeHistoryTable() {
           <button
             onClick={() => setPage(p => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
+            data-testid="pagination-next"
             className="px-3 py-1 text-sm border rounded disabled:opacity-50"
           >
             다음
