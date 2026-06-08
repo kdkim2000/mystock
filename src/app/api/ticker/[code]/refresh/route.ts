@@ -120,11 +120,12 @@ export async function POST(
 
       // --- valuation ---
       (async () => {
-        const raw = await kisRequest<Record<string, string>>(
+        const rawResult = await kisRequest<unknown>(
           '/uapi/domestic-stock/v1/finance/financial-ratio',
           { fid_cond_mrkt_div_code: 'J', fid_input_iscd: code, fid_period_div_code: 'A' },
           'FHKST66430200',
         )
+        const raw = (Array.isArray(rawResult) ? (rawResult[0] ?? {}) : (rawResult ?? {})) as Record<string, string>
         const data: Valuation = {
           code,
           per: Number(raw.per),
@@ -144,11 +145,12 @@ export async function POST(
 
       // --- financial (balance-sheet) ---
       (async () => {
-        const raw = await kisRequest<Record<string, string>>(
+        const rawResult = await kisRequest<unknown>(
           '/uapi/domestic-stock/v1/finance/balance-sheet',
           { fid_cond_mrkt_div_code: 'J', fid_input_iscd: code, fid_period_div_code: 'A' },
           'FHKST66430300',
         )
+        const raw = (Array.isArray(rawResult) ? (rawResult[0] ?? {}) : (rawResult ?? {})) as Record<string, string>
         const data: FinancialSummary = {
           code,
           totalAssets: Number(raw.total_aset),
@@ -156,7 +158,7 @@ export async function POST(
           totalEquity: Number(raw.total_cptl),
           revenue: Number(raw.sale_account),
           operatingProfit: Number(raw.bsop_prti),
-          netProfit: Number(raw.thtr_ntin),
+          netProfit: Number(raw.thtr_ntis),
           fiscalYear: raw.stac_yymm ?? '',
         }
         await setCached(`${code}_financial`, data)

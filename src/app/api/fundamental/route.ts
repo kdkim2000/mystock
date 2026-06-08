@@ -24,13 +24,14 @@ export async function GET(request: Request) {
   const { code } = parsed.data
 
   try {
-    // 1. 통합 캐시 확인 (TTL 30분)
-    const cacheKey = `${code}_fundamental`
-    const cached = await getCached<{ valuation: Valuation; financial: FinancialSummary }>(
-      cacheKey,
-      1800,
-    )
-    if (cached) return ok(cached, cached.cachedAt)
+    // 1. 개별 캐시 확인 — refresh/route.ts와 동일 키 사용 (hit 시 KIS 재호출 없음)
+    const [cachedVal, cachedFin] = await Promise.all([
+      getCached<Valuation>(`${code}_valuation`, 1800),
+      getCached<FinancialSummary>(`${code}_financial`, 1800),
+    ])
+    if (cachedVal && cachedFin) {
+      return ok({ valuation: cachedVal, financial: cachedFin })
+    }
 
     // KIS output이 배열로 올 경우 첫 번째 원소 추출 (단건 객체도 지원)
     const toRecord = (raw: unknown): Record<string, string> => {
@@ -85,8 +86,11 @@ export async function GET(request: Request) {
 
     const result = { valuation, financial }
 
-    // 5. 캐시 저장
-    await setCached(cacheKey, result)
+    // 5. 개별 캐시 저장 — refresh/route.ts와 동일 키
+    await Promise.all([
+      setCached(`${code}_valuation`, valuation),
+      setCached(`${code}_financial`, financial),
+    ])
 
     return ok(result)
   } catch (e) {
