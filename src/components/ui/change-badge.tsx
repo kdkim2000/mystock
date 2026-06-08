@@ -4,6 +4,7 @@ interface ChangeBadgeProps {
   value: number      // 등락률 또는 등락금액
   suffix?: string    // '%' 또는 '원'
   showSign?: boolean // 기본 true
+  decimals?: number  // 소수점 자릿수 (기본 2)
   className?: string
 }
 
@@ -11,22 +12,27 @@ export function ChangeBadge({
   value,
   suffix = '%',
   showSign = true,
+  decimals = 2,
   className,
 }: ChangeBadgeProps) {
   const isUp = value > 0
   const isDown = value < 0
+  const formatted = value.toLocaleString('ko-KR', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  })
 
   return (
     <span
       className={cn(
         'text-sm font-semibold tabular-nums',
-        isUp && 'text-[hsl(var(--color-price-up))]',     // 빨강 (상승)
-        isDown && 'text-[hsl(var(--color-price-down))]', // 파랑 (하락)
+        isUp && 'text-[hsl(var(--color-price-up))]',
+        isDown && 'text-[hsl(var(--color-price-down))]',
         !isUp && !isDown && 'text-[hsl(var(--color-price-neutral))]',
         className
       )}
     >
-      {showSign && isUp ? '+' : ''}{value.toFixed(2)}{suffix}
+      {showSign && isUp ? '+' : ''}{formatted}{suffix}
     </span>
   )
 }

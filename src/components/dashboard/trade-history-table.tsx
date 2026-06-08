@@ -20,7 +20,7 @@ export function TradeHistoryTable() {
 
   if (isLoading) return <Skeleton className="h-64" />
 
-  const sorted = [...(data ?? [])].reverse()
+  const sorted = [...(data ?? [])].sort((a, b) => b.Date.localeCompare(a.Date))
   const totalPages = Math.ceil(sorted.length / PAGE_SIZE)
   const rows = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
