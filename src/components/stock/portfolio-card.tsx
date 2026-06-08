@@ -11,7 +11,8 @@ export function PortfolioCard({ code }: Props) {
   const { data: agg } = useAggregation()
   const { data: price, isLoading } = useStockPrice(code)
 
-  const holding = agg?.find(r => r.Code === code)
+  // GOOGLE_SHEET_TICKER_MASTER 미설정 시 Code가 빈 문자열 → 종목명으로 fallback 매칭
+  const holding = agg?.find(r => r.Code === code) ?? agg?.find(r => price && r.Ticker === price.name)
   if (!holding || holding.Holdings === 0) return null
   if (isLoading) return <Card id="sec-portfolio"><CardContent className="h-32 pt-6"><Skeleton className="h-full" /></CardContent></Card>
 

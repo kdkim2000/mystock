@@ -51,6 +51,7 @@ export async function GET(request: Request) {
         fid_org_adj_prc: '1',
       },
       'FHKST03010100',
+      'output2',  // 일봉 배열은 output2에 담김
     )
 
     const data: DailyPrice[] = (raw as Record<string, string>[]).map((item) => ({

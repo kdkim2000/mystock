@@ -143,15 +143,17 @@ async function throttledFetch(
 /**
  * KIS Open API GET 요청 공통 함수.
  *
- * @param apiPath - API 경로 (예: '/uapi/domestic-stock/v1/quotations/inquire-price')
- * @param params  - 쿼리 파라미터
- * @param trId    - KIS TR ID (예: 'FHKST01010100')
- * @returns       - 응답 output 객체 (T 타입)
+ * @param apiPath   - API 경로 (예: '/uapi/domestic-stock/v1/quotations/inquire-price')
+ * @param params    - 쿼리 파라미터
+ * @param trId      - KIS TR ID (예: 'FHKST01010100')
+ * @param outputKey - 응답에서 꺼낼 키: 단건은 'output', 목록 배열은 'output2' (기본: 'output')
+ * @returns         - 응답 output 객체 (T 타입)
  */
 export async function kisRequest<T>(
   apiPath: string,
   params: Record<string, string>,
   trId: string,
+  outputKey: 'output' | 'output2' = 'output',
 ): Promise<T> {
   const token = await getKisToken()
   const url = `${KIS_BASE}${apiPath}?${new URLSearchParams(params).toString()}`
@@ -171,7 +173,6 @@ export async function kisRequest<T>(
     rt_cd?: string
     msg_cd?: string
     msg1?: string
-    output?: T
     [key: string]: unknown
   }
 
@@ -186,6 +187,6 @@ export async function kisRequest<T>(
     throw new Error('KIS_TOKEN_EXPIRED')
   }
 
-  // output 필드가 있으면 output 반환, 없으면 data 전체 반환
-  return (data.output ?? data) as T
+  // output / output2 키가 있으면 해당 값 반환, 없으면 data 전체 반환
+  return (data[outputKey] ?? data) as T
 }

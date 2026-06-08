@@ -27,6 +27,7 @@ export async function GET(request: Request) {
       '/uapi/domestic-stock/v1/quotations/inquire-investor',
       { fid_cond_mrkt_div_code: 'J', fid_input_iscd: code },
       'FHKST01010900',
+      'output2',  // 일별 수급 배열은 output2에 담김
     )
 
     const data: TradingTrend[] = (raw as Record<string, string>[]).map((item) => ({

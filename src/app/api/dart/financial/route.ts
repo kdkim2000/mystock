@@ -139,13 +139,23 @@ export async function GET(request: Request) {
     const oneYearAgo = getOneYearAgo()
 
     // 3. 재무제표 + 공시 병렬 요청
-    const [financialData, disclosureData] = await Promise.all([
-      dartRequest<DartFinancialResponse>('fnlttSinglAcnt.json', {
-        corp_code: corpCode,
-        bsns_year: currentYear,
-        reprt_code: '11011', // 사업보고서
-        fs_div: 'CFS',       // 연결재무제표
-      }),
+    // 사업보고서는 전년도(currentYear-1)가 가장 최신 확정치 → 당해연도 빈 결과 시 전년도 재시도
+    const fetchFinancial = async () => {
+      const years = [currentYear, String(Number(currentYear) - 1)]
+      for (const year of years) {
+        const data = await dartRequest<DartFinancialResponse>('fnlttSinglAcnt.json', {
+          corp_code: corpCode,
+          bsns_year: year,
+          reprt_code: '11011', // 사업보고서
+          fs_div: 'CFS',       // 연결재무제표
+        })
+        if (data.list?.length) return { data, year }
+      }
+      return { data: { status: '020', message: 'no data', list: [] as DartAccountItem[] }, year: currentYear }
+    }
+
+    const [financialResult, disclosureData] = await Promise.all([
+      fetchFinancial(),
       dartRequest<DartDisclosureResponse>('list.json', {
         corp_code: corpCode,
         bgn_de: oneYearAgo,
@@ -156,7 +166,7 @@ export async function GET(request: Request) {
     ])
 
     // 4. DartFinancial 변환
-    const financial = buildFinancialYears(financialData.list ?? [], code, currentYear)
+    const financial = buildFinancialYears(financialResult.data.list ?? [], code, financialResult.year)
 
     // 5. DartDisclosure[] 변환
     const disclosures: DartDisclosure[] = (disclosureData.list ?? []).map((item) => ({

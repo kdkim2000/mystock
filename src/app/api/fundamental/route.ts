@@ -75,7 +75,7 @@ export async function GET(request: Request) {
       totalEquity: Number(financialRaw.total_cptl),
       revenue: Number(financialRaw.sale_account),
       operatingProfit: Number(financialRaw.bsop_prti),
-      netProfit: Number(financialRaw.thtr_ntin),
+      netProfit: Number(financialRaw.thtr_ntis),
       fiscalYear: financialRaw.stac_yymm ?? '',
     }
 

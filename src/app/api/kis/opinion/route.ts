@@ -27,6 +27,7 @@ export async function GET(request: Request) {
       '/uapi/domestic-stock/v1/quotations/inquire-invest-opinion',
       { fid_cond_mrkt_div_code: 'J', fid_input_iscd: code },
       'FHKST03010600',
+      'output2',  // 애널리스트 의견 목록은 output2에 담김
     )
 
     const data: AnalystOpinion[] = (raw as Record<string, string>[]).map((item) => ({
