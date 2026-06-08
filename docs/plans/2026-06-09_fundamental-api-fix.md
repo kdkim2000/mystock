@@ -57,7 +57,15 @@ estimatedRevenue: raw.stac_yymm ? Number(raw.est_sale_amnt) : undefined
    - `estimatedRevenue` 조건 수정: `raw.stac_yymm` → `raw.est_sale_amnt`
 
 ## 실행 결과
-(실행 후 작성)
+
+- ✅ `src/lib/kis.ts`: 에러 처리 개선 — `rt_cd !== '0'`이면 `msg_cd`별 분류 (RATE_LIMIT / TOKEN_EXPIRED / KIS_ERROR[code])
+- ✅ `src/app/api/fundamental/route.ts`: `Promise.all` → 순차 호출 + `toRecord()` 배열 방어 처리
+- ✅ `src/app/api/kis/valuation/route.ts`: 배열 방어 처리 + `estimatedRevenue` 조건 수정
+- ✅ `src/app/api/kis/financial/route.ts`: 배열 방어 처리
+- ✅ TypeScript 오류 없음, git commit `a7fdb0b`
 
 ## Lessons Learned
-(실행 후 작성)
+
+- `throttledFetch`는 `_kisLastCallTime = undefined` (첫 호출)일 때 스로틀을 건너뜀 → `Promise.all`로 2개 이상 동시 호출 시 rate limit 발생. 재무 API처럼 연달아 필요한 경우는 순차 호출이 필수.
+- KIS API는 응답 구조가 API마다 다름 (단건 object vs 배열). `Array.isArray` 방어 처리를 패턴화할 것.
+- 에러 메시지에 실제 KIS msg_cd·msg1을 포함해야 원인 파악이 가능. 'KIS_RATE_LIMIT' 하나로 퉁치면 파라미터 오류 등을 구분할 수 없음.
