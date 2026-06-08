@@ -22,8 +22,6 @@ export function FinancialRadarChart({ code }: Props) {
     enabled: !!code, staleTime: 30 * 60 * 1000,
   })
 
-  if (isLoading) return <Card id="sec-radar"><CardContent className="h-64 pt-6"><Skeleton className="h-full" /></CardContent></Card>
-
   const v = data?.valuation
   const f = data?.financial
 
@@ -39,6 +37,8 @@ export function FinancialRadarChart({ code }: Props) {
     { subject: '수익률', value: v ? normalize(v.roe, 0, 30) : 0 },
     { subject: '성장성', value: f && f.revenue > 0 ? normalize((f.operatingProfit / f.revenue) * 100, 0, 30) : 0 },
   ], [v, f])
+
+  if (isLoading) return <Card id="sec-radar"><CardContent className="h-64 pt-6"><Skeleton className="h-full" /></CardContent></Card>
 
   return (
     <Card id="sec-radar">
