@@ -23,11 +23,13 @@ export async function GET(request: Request) {
     const cached = await getCached<FinancialSummary>(`${code}_financial`, 1800)
     if (cached) return ok(cached, cached.cachedAt)
 
-    const raw = await kisRequest<Record<string, string>>(
+    const rawResult = await kisRequest<unknown>(
       '/uapi/domestic-stock/v1/finance/balance-sheet',
       { fid_cond_mrkt_div_code: 'J', fid_input_iscd: code, fid_period_div_code: 'A' },
       'FHKST66430300',
     )
+    // output이 배열로 올 경우 첫 번째 원소 추출
+    const raw = (Array.isArray(rawResult) ? (rawResult[0] ?? {}) : (rawResult ?? {})) as Record<string, string>
 
     const data: FinancialSummary = {
       code,

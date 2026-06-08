@@ -32,21 +32,25 @@ export async function GET(request: Request) {
     )
     if (cached) return ok(cached, cached.cachedAt)
 
-    // 2. KIS valuation + financial 병렬 요청
-    const [valuationRaw, financialRaw] = await Promise.all([
-      kisRequest<Record<string, string>>(
-        '/uapi/domestic-stock/v1/finance/financial-ratio',
-        { fid_cond_mrkt_div_code: 'J', fid_input_iscd: code, fid_period_div_code: 'A' },
-        'FHKST66430200',
-      ),
-      kisRequest<Record<string, string>>(
-        '/uapi/domestic-stock/v1/finance/balance-sheet',
-        { fid_cond_mrkt_div_code: 'J', fid_input_iscd: code, fid_period_div_code: 'A' },
-        'FHKST66430300',
-      ),
-    ])
+    // KIS output이 배열로 올 경우 첫 번째 원소 추출 (단건 객체도 지원)
+    const toRecord = (raw: unknown): Record<string, string> => {
+      const obj = Array.isArray(raw) ? (raw[0] ?? {}) : (raw ?? {})
+      return obj as Record<string, string>
+    }
 
-    // 3. Valuation 변환 (kis/valuation/route.ts 동일 로직)
+    // 2. KIS valuation + financial 순차 요청 (병렬 시 Rate Limit 발생)
+    const valuationRaw = toRecord(await kisRequest<unknown>(
+      '/uapi/domestic-stock/v1/finance/financial-ratio',
+      { fid_cond_mrkt_div_code: 'J', fid_input_iscd: code, fid_period_div_code: 'A' },
+      'FHKST66430200',
+    ))
+    const financialRaw = toRecord(await kisRequest<unknown>(
+      '/uapi/domestic-stock/v1/finance/balance-sheet',
+      { fid_cond_mrkt_div_code: 'J', fid_input_iscd: code, fid_period_div_code: 'A' },
+      'FHKST66430300',
+    ))
+
+    // 3. Valuation 변환
     const valuation: Valuation = {
       code,
       per: Number(valuationRaw.per),

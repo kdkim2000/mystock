@@ -176,12 +176,16 @@ export async function kisRequest<T>(
     [key: string]: unknown
   }
 
-  // Rate Limit 오류
-  if (data.rt_cd !== '0' || data.msg_cd === 'EGW00133') {
-    throw new Error('KIS_RATE_LIMIT')
+  // API 오류 처리
+  if (data.rt_cd !== '0') {
+    const msgCd = String(data.msg_cd ?? '')
+    const msg1  = String(data.msg1  ?? '')
+    if (msgCd === 'EGW00133') throw new Error('KIS_RATE_LIMIT')
+    if (msgCd === 'EGW00201') { softExpireKisToken(); throw new Error('KIS_TOKEN_EXPIRED') }
+    throw new Error(`KIS_ERROR [${msgCd}] ${msg1}`)
   }
 
-  // 토큰 만료 오류
+  // 성공 응답이지만 토큰 만료 코드인 경우 (방어 처리)
   if (data.msg_cd === 'EGW00201') {
     softExpireKisToken()
     throw new Error('KIS_TOKEN_EXPIRED')
