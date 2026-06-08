@@ -26,8 +26,15 @@ export async function readSheet(range: string): Promise<string[][]> {
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: env.GOOGLE_SPREADSHEET_ID,
     range,
+    // UNFORMATTED_VALUE: 숫자를 "35,400"이 아닌 35400으로 반환 (천 단위 구분자 제거)
+    // FORMATTED_STRING: 날짜 셀은 서식 문자열로 반환 (시리얼 번호 방지)
+    valueRenderOption: 'UNFORMATTED_VALUE',
+    dateTimeRenderOption: 'FORMATTED_STRING',
   })
-  return res.data.values as string[][] ?? []
+  const values = res.data.values ?? []
+  return values.map(row =>
+    row.map(cell => (cell === null || cell === undefined ? '' : String(cell)))
+  )
 }
 
 export async function writeSheet(range: string, values: string[][]): Promise<void> {
