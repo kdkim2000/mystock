@@ -19,6 +19,17 @@ function isWithinTtl(cachedAt: string, ttlSeconds: number): boolean {
   return (Date.now() - new Date(cachedAt).getTime()) / 1000 < ttlSeconds
 }
 
+// 배열을 spread하면 { '0': item, '1': item, cachedAt } 객체가 되어 .slice() 등이 깨짐.
+// 배열은 named property로 cachedAt을 추가해 JSON 직렬화 시 숫자 인덱스만 유지한다.
+function withCachedAt<T>(value: T, cachedAt: string): T & { cachedAt: string } {
+  if (Array.isArray(value)) {
+    const arr = [...value] as unknown as T & { cachedAt: string }
+    ;(arr as unknown as Record<string, unknown>).cachedAt = cachedAt
+    return arr
+  }
+  return { ...(value as object), cachedAt } as T & { cachedAt: string }
+}
+
 // ---------------------------------------------------------------------------
 // getCached<T>
 // ---------------------------------------------------------------------------
@@ -37,7 +48,7 @@ export async function getCached<T>(
   const mem = getMemoryCache()
   const memEntry = mem.get(key)
   if (memEntry && isWithinTtl(memEntry.cachedAt, ttlSeconds)) {
-    return { ...(memEntry.value as T), cachedAt: memEntry.cachedAt }
+    return withCachedAt(memEntry.value as T, memEntry.cachedAt)
   }
 
   // 2. Google Sheets _TICKER_CACHE_ 탭 확인
@@ -64,7 +75,7 @@ export async function getCached<T>(
       return null
     }
     mem.set(key, { value: parsed, cachedAt: rowCachedAt })
-    return { ...parsed, cachedAt: rowCachedAt }
+    return withCachedAt(parsed, rowCachedAt)
   }
 
   // 3. 캐시 미스
