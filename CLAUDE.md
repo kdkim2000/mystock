@@ -76,9 +76,12 @@ Cache lookup order: `globalThis` → Sheets → external API call → write back
 | Ticker | string | Korean stock name |
 | Type | string | 매수 / 매도 |
 | Quantity | number | shares |
-| Price | number | unit price |
+| Price | number | unit price per share |
+| Fee | number | brokerage fee |
+| Tax | number | transaction tax (매도 시) |
 | Journal | string | trade memo |
 | Tags | string | strategy tags, comma-separated |
+| Amount | number | gross transaction amount (Quantity × Price) |
 
 TypeScript type: `SheetTransactionRow`
 
