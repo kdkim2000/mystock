@@ -26,12 +26,15 @@ export function CumulativeProfitChart() {
       if (r.Type === '매수') {
         pos.cost += r.Price * r.Quantity + r.Fee
         pos.qty  += r.Quantity
-      } else {
-        const avgCost = pos.qty > 0 ? pos.cost / pos.qty : 0
-        const realized = r.Price * r.Quantity - r.Fee - r.Tax - avgCost * r.Quantity
+      } else if (pos.qty > 0) {
+        // 보유 수량 내에서만 실현손익 계산 (매수이력 없는 수량 제외)
+        const soldQty = Math.min(r.Quantity, pos.qty)
+        const avgCost = pos.cost / pos.qty
+        const feeRatio = r.Quantity > 0 ? soldQty / r.Quantity : 1
+        const realized = r.Price * soldQty - (r.Fee + r.Tax) * feeRatio - avgCost * soldQty
         cumulative += realized
-        pos.cost = Math.max(0, pos.cost - avgCost * r.Quantity)
-        pos.qty  = Math.max(0, pos.qty - r.Quantity)
+        pos.cost = Math.max(0, pos.cost - avgCost * soldQty)
+        pos.qty  = Math.max(0, pos.qty - soldQty)
       }
       posMap[r.Ticker] = pos
       points.push({ date: r.Date, value: Math.round(cumulative) })
