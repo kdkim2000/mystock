@@ -78,6 +78,7 @@ export function StockAnalysisTable() {
               <TableHead className="text-right">평균단가</TableHead>
               <TableHead className="text-right">실현손익</TableHead>
               <TableHead className="text-right">평가금액 ↓</TableHead>
+              <TableHead className="text-right">평가손익</TableHead>
               <TableHead className="text-right">승률</TableHead>
               <TableHead className="text-right">거래횟수</TableHead>
             </TableRow>
@@ -87,6 +88,9 @@ export function StockAnalysisTable() {
               const currentPrice = row.Code ? priceMap[row.Code] : undefined
               const evalAmount = row.Holdings > 0
                 ? row.Holdings * (currentPrice ?? row.AvgPrice)
+                : null
+              const evalPnL = evalAmount != null
+                ? evalAmount - row.Holdings * row.AvgPrice
                 : null
               const isPriceLoading = row.Holdings > 0 && row.Code && currentPrice === undefined
 
@@ -111,6 +115,11 @@ export function StockAnalysisTable() {
                       : <span className="text-muted-foreground">-</span>}
                   </TableCell>
                   <TableCell className="text-right">
+                    {evalPnL != null
+                      ? <ChangeBadge value={Math.round(evalPnL)} suffix="원" decimals={0} />
+                      : <span className="text-muted-foreground">-</span>}
+                  </TableCell>
+                  <TableCell className="text-right">
                     {row.TradeCount > 0 ? `${(row.WinCount / row.TradeCount * 100).toFixed(0)}%` : '-'}
                   </TableCell>
                   <TableCell className="text-right">{row.TradeCount}회</TableCell>
@@ -119,7 +128,7 @@ export function StockAnalysisTable() {
             })}
             {rows.length === 0 && (
               <TableRow>
-                <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
+                <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
                   {showAll ? '거래 데이터가 없습니다.' : '보유 중인 종목이 없습니다.'}
                 </TableCell>
               </TableRow>
