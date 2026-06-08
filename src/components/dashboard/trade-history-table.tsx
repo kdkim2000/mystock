@@ -35,6 +35,8 @@ export function TradeHistoryTable() {
               <TableHead>구분</TableHead>
               <TableHead className="text-right">수량</TableHead>
               <TableHead className="text-right">단가</TableHead>
+              <TableHead className="hidden md:table-cell text-right">금액</TableHead>
+              <TableHead className="hidden md:table-cell text-right">수수료+세금</TableHead>
               <TableHead className="hidden sm:table-cell">메모</TableHead>
             </TableRow>
           </TableHeader>
@@ -50,6 +52,12 @@ export function TradeHistoryTable() {
                 </TableCell>
                 <TableCell className="text-right">{r.Quantity.toLocaleString('ko-KR')}</TableCell>
                 <TableCell className="text-right">{r.Price.toLocaleString('ko-KR')}원</TableCell>
+                <TableCell className="hidden md:table-cell text-right text-sm">
+                  {r.Amount.toLocaleString('ko-KR')}원
+                </TableCell>
+                <TableCell className="hidden md:table-cell text-right text-sm text-muted-foreground">
+                  {(r.Fee + r.Tax).toLocaleString('ko-KR')}원
+                </TableCell>
                 <TableCell className="hidden sm:table-cell text-sm text-muted-foreground truncate max-w-[200px]">
                   {r.Journal}
                 </TableCell>

@@ -30,8 +30,11 @@ export const mockTransactions: SheetTransactionRow[] = [
     Type: '매수',
     Quantity: 10,
     Price: 70000,
+    Fee: 525,
+    Tax: 0,
     Journal: '저점 매수',
     Tags: '가치투자',
+    Amount: 700000,
   },
   {
     Date: '2026-06-05',
@@ -39,8 +42,11 @@ export const mockTransactions: SheetTransactionRow[] = [
     Type: '매도',
     Quantity: 5,
     Price: 185000,
+    Fee: 693,
+    Tax: 1110,
     Journal: '목표가 도달',
     Tags: '단기매매',
+    Amount: 925000,
   },
 ]
 

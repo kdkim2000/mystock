@@ -97,7 +97,7 @@ export async function POST(request: Request) {
     const valuation = await getCached<Valuation>(`${code}_valuation`, 1800)
 
     // 3. 거래내역 조회 (매매 일지 컨텍스트)
-    const sheetRange = `${env.GOOGLE_SHEET_NAME}!A:G`
+    const sheetRange = `${env.GOOGLE_SHEET_NAME}!A:J`
     const rows = await readSheet(sheetRange)
 
     // 헤더 행(첫 행) 제외 후 SheetTransactionRow[] 변환
@@ -105,13 +105,16 @@ export async function POST(request: Request) {
       .slice(1)
       .filter((row) => row.length >= 5)
       .map((row) => ({
-        Date: row[0] ?? '',
-        Ticker: row[1] ?? '',
-        Type: (row[2] === '매도' ? '매도' : '매수') as '매수' | '매도',
+        Date:     row[0] ?? '',
+        Ticker:   row[1] ?? '',
+        Type:     (row[2] === '매도' ? '매도' : '매수') as '매수' | '매도',
         Quantity: Number(row[3]) || 0,
-        Price: Number(row[4]) || 0,
-        Journal: row[5] ?? '',
-        Tags: row[6] ?? '',
+        Price:    Number(row[4]) || 0,
+        Fee:      Number(row[5]) || 0,
+        Tax:      Number(row[6]) || 0,
+        Journal:  row[7] ?? '',
+        Tags:     row[8] ?? '',
+        Amount:   Number(row[9]) || 0,
       }))
       // 해당 종목 필터 (종목명은 Ticker 컬럼에 저장)
       .filter((row) => row.Ticker !== '')

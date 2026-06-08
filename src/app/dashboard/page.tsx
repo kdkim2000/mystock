@@ -19,17 +19,20 @@ export default async function DashboardPage() {
   await queryClient.prefetchQuery({
     queryKey: ['sheets', 'transactions'],
     queryFn: async () => {
-      const rows = await readSheet(`${env.GOOGLE_SHEET_NAME}!A:G`)
+      const rows = await readSheet(`${env.GOOGLE_SHEET_NAME}!A:J`)
       return rows.slice(1)
         .filter(r => r[0] && r[1])
         .map(r => ({
-          Date: r[0],
-          Ticker: r[1],
-          Type: r[2] as '매수' | '매도',
-          Quantity: Number(r[3]),
-          Price: Number(r[4]),
-          Journal: r[5] ?? '',
-          Tags: r[6] ?? '',
+          Date:     r[0],
+          Ticker:   r[1],
+          Type:     (r[2] === '매수' || r[2] === '매도') ? r[2] : '매수' as '매수' | '매도',
+          Quantity: Number(r[3]) || 0,
+          Price:    Number(r[4]) || 0,
+          Fee:      Number(r[5]) || 0,
+          Tax:      Number(r[6]) || 0,
+          Journal:  r[7] ?? '',
+          Tags:     r[8] ?? '',
+          Amount:   Number(r[9]) || 0,
         } satisfies SheetTransactionRow))
     },
   })

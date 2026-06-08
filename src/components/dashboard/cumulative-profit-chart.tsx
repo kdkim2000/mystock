@@ -13,20 +13,40 @@ export function CumulativeProfitChart() {
 
   const chartData = useMemo(() => {
     if (!data) return []
-    const sells = data.filter(r => r.Type === '매도').sort((a, b) => a.Date.localeCompare(b.Date))
-    const cutoff = period === '6m' ? 6 : period === '3m' ? 3 : 0
-    const filtered = cutoff > 0 ? sells.filter(r => {
-      const d = new Date(r.Date)
-      const now = new Date()
-      now.setMonth(now.getMonth() - cutoff)
-      return d >= now
-    }) : sells
 
+    const sorted = [...data].sort((a, b) => a.Date.localeCompare(b.Date))
+
+    // 종목별 이동평균 단가 추적
+    const posMap: Record<string, { qty: number; cost: number }> = {}
     let cumulative = 0
-    return filtered.map(r => {
-      cumulative += (r.Price * r.Quantity * 0.05) // 간략화: 5% 수익 가정 (실제는 매수 단가 필요)
-      return { date: r.Date, value: cumulative }
-    })
+    const points: { date: string; value: number }[] = []
+
+    for (const r of sorted) {
+      const pos = posMap[r.Ticker] ?? { qty: 0, cost: 0 }
+      if (r.Type === '매수') {
+        pos.cost += r.Price * r.Quantity + r.Fee
+        pos.qty  += r.Quantity
+      } else {
+        const avgCost = pos.qty > 0 ? pos.cost / pos.qty : 0
+        const realized = r.Price * r.Quantity - r.Fee - r.Tax - avgCost * r.Quantity
+        cumulative += realized
+        pos.cost = Math.max(0, pos.cost - avgCost * r.Quantity)
+        pos.qty  = Math.max(0, pos.qty - r.Quantity)
+      }
+      posMap[r.Ticker] = pos
+      points.push({ date: r.Date, value: Math.round(cumulative) })
+    }
+
+    // 날짜별 마지막 누적값만 유지
+    const byDate = new Map<string, number>()
+    for (const p of points) byDate.set(p.date, p.value)
+    const all = Array.from(byDate, ([date, value]) => ({ date, value }))
+
+    const cutoff = period === '6m' ? 6 : period === '3m' ? 3 : 0
+    if (cutoff === 0) return all
+    const since = new Date()
+    since.setMonth(since.getMonth() - cutoff)
+    return all.filter(p => new Date(p.date) >= since)
   }, [data, period])
 
   if (isLoading) return (

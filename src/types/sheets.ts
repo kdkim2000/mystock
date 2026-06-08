@@ -4,8 +4,11 @@ export interface SheetTransactionRow {
   Type: '매수' | '매도'
   Quantity: number
   Price: number
+  Fee: number
+  Tax: number
   Journal: string
   Tags: string
+  Amount: number
 }
 
 export interface TickerCacheEntry {
