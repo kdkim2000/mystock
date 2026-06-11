@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "src/app/api/ticker/[code]/refresh/route.ts": {
-      "maxDuration": 60
-    }
-  }
-}
